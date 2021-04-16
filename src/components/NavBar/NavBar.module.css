@@ -1,0 +1,14 @@
+.navBar {
+    grid-area: n;
+    background: #0066ff;
+    padding: 15px;
+}
+.navBar a {
+    text-decoration: none;
+    color: bisque;
+}
+
+.navBar a.active{
+    font-weight: bold;
+    color: darkorange;
+}
