@@ -3,6 +3,7 @@ import style from "./MyPosts.module.css";
 import {addPost, onPostChange, PostType} from "../../../redux/profileReducer";
 import {AppStateType} from "../../../redux/store";
 import {connect} from "react-redux";
+import {Post} from "./Post/Post";
 
 export function MyPosts(props: MyPostsPropsType) {
     return (
@@ -15,11 +16,11 @@ export function MyPosts(props: MyPostsPropsType) {
                 <button>Add post</button>
             </div>
             <div>New post</div>
-            {props.posts.map(post => <div>{post.message}  {post.name}</div>)}
+            {props.posts.map(post => <Post key={post.id} id={post.id} avatar={post.avatar} name={post.name}
+                                                       message={post.message} time={post.time}/>)}
         </div>
     )
 }
-
 
 type mapStateToPropsType = {
     posts: PostType[],
