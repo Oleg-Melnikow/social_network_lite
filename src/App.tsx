@@ -4,7 +4,7 @@ import './App.css';
 import {Header} from "./components/Header/Header";
 import {NavBar} from "./components/NavBar/NavBar";
 import {Profile} from "./components/Profile/Profile";
-import Dialogs from "./components/Dialogs/Dialogs";
+import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <NavBar/>
           <div className="wrap-content">
               <Route path="/profile" render={() => <Profile/>}/>
-              <Route path="/dialogs" render={() => <Dialogs/>}/>
+              <Route path="/dialogs" render={() => <DialogsContainer/>}/>
           </div>
       </div>
   );

@@ -1,9 +1,7 @@
 import React, {ChangeEvent} from "react";
 import style from "./MyPosts.module.css";
-import {addPost, onPostChange, PostType} from "../../../redux/profileReducer";
-import {AppStateType} from "../../../redux/store";
-import {connect} from "react-redux";
 import {Post} from "./Post/Post";
+import {MyPostsPropsType} from "./MyPostContainer";
 
 export function MyPosts(props: MyPostsPropsType) {
 
@@ -26,22 +24,3 @@ export function MyPosts(props: MyPostsPropsType) {
         </div>
     )
 }
-
-type mapStateToPropsType = {
-    posts: PostType[],
-    newPostText: string
-}
-
-type mapDispatchToProps = {
-    addPost: () => void,
-    onPostChange: (newText: string) => void
-}
-
-export type MyPostsPropsType = mapStateToPropsType & mapDispatchToProps
-
-let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
-    posts: state.profilePage.posts,
-    newPostText: state.profilePage.newPostText
-})
-
-export default connect(mapStateToProps, {addPost, onPostChange})(MyPosts);
