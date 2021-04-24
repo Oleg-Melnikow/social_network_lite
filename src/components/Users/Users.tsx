@@ -4,13 +4,28 @@ import avatar from "../../assets/image/avatar-guest.gif"
 import {UserType} from '../../redux/usersReducer';
 
 type UsersPropType = {
-    users: Array<UserType>
+    users: Array<UserType>,
+    pageSize: number,
+    currentPage: number,
+    totalUsersCount: number,
+    onPageChanged: (pageNumber: number) => void
 }
 
 export const Users = (props: UsersPropType) => {
 
+    let pageCount = Math.ceil(props.totalUsersCount / props.pageSize);
+    let pages: number[] = []
+    for (let i = 1; i <= pageCount; i++) {
+        pages.push(i)
+    }
+
     return (
         <div className={style.container}>
+            <div>
+                {pages.map((p, i) => <span key={i}
+                                           onClick={() => {props.onPageChanged(p)}}
+                                           className={props.currentPage === p ? style.selectPage : ""}> {p}</span>)}
+            </div>
             {props.users.map(u => {
                 return <div key={`${u.id}_${u.name}`} className={style.users}>
                     <div className={style.avatarBlock}>
