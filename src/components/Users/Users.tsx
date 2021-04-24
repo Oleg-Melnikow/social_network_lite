@@ -1,15 +1,20 @@
 import React from 'react';
-import {UsersPropsType} from "./UsersContainer";
 import style from "./Users.module.css"
 import avatar from "../../assets/image/avatar-guest.gif"
+import {UserType} from '../../redux/usersReducer';
 
-export const Users = (props: UsersPropsType) => {
+type UsersPropType = {
+    users: Array<UserType>
+}
+
+export const Users = (props: UsersPropType) => {
+
     return (
         <div className={style.container}>
             {props.users.map(u => {
                 return <div key={`${u.id}_${u.name}`} className={style.users}>
                     <div className={style.avatarBlock}>
-                            <img src={u.photos.small ? u.photos.small : avatar} alt="avatar"/>
+                        <img src={u.photos.small ? u.photos.small : avatar} alt="avatar"/>
                         <button>
                             {u.followed ? "unfollow" : "follow"}
                         </button>

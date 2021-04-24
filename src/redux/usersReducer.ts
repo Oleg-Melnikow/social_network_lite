@@ -17,11 +17,7 @@ export type ProfilePageType = {
 }
 
 let initialState: ProfilePageType = {
-    users: [
-        {id: 1, name: "John", followed: true, status: "HI bro", photos: {}},
-        {id: 2, name: "Nick", followed: false, status: "I'm a student", photos: {}},
-        {id: 2, name: "Den", followed: false, status: "I like JS", photos: {}},
-    ]
+    users: []
 }
 
 
