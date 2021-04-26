@@ -1,0 +1,8 @@
+.avatar img{
+    border-radius: 50%;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+}

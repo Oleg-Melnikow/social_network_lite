@@ -21,7 +21,6 @@ class ProfileContainer extends React.Component<ProfilePropsType> {
         profileAPI.setUserProfile("1354")
             .then(response => {
                 this.props.setUserProfile(response.data)
-                console.log(response.data)
             })
     }
 
