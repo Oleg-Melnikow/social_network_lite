@@ -2,6 +2,7 @@ import React from 'react';
 import style from "./Users.module.css"
 import avatar from "../../assets/image/avatar-guest.gif"
 import {UserType} from '../../redux/usersReducer';
+import {NavLink} from 'react-router-dom';
 
 type UsersPropType = {
     users: Array<UserType>,
@@ -23,13 +24,17 @@ export const Users = (props: UsersPropType) => {
         <div className={style.container}>
             <div>
                 {pages.map((p, i) => <span key={i}
-                                           onClick={() => {props.onPageChanged(p)}}
+                                           onClick={() => {
+                                               props.onPageChanged(p)
+                                           }}
                                            className={props.currentPage === p ? style.selectPage : ""}> {p}</span>)}
             </div>
             {props.users.map(u => {
                 return <div key={`${u.id}_${u.name}`} className={style.users}>
                     <div className={style.avatarBlock}>
-                        <img src={u.photos.small ? u.photos.small : avatar} alt="avatar"/>
+                        <NavLink to={`profile/${u.id}`}>
+                            <img src={u.photos.small ? u.photos.small : avatar} alt="avatar"/>
+                        </NavLink>
                         <button>
                             {u.followed ? "unfollow" : "follow"}
                         </button>

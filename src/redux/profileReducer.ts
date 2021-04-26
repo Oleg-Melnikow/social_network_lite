@@ -1,5 +1,6 @@
 const ADD_POST = "ADD_POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
+const SET_USER_PROFILE = "SET_USER_PROFILE";
 
 export type PostType = {
     id: number,
@@ -12,6 +13,17 @@ export type PostType = {
 export type ProfilePageType = {
     posts: Array<PostType>,
     newPostText: string,
+    profile: profileType | null
+}
+
+export type profileType = {
+    aboutMe: string,
+    fullName: string,
+    userId: number,
+    photos: {
+        small: string,
+        large: string
+    }
 }
 
 let initialState: ProfilePageType = {
@@ -31,7 +43,8 @@ let initialState: ProfilePageType = {
             time: "21:22"
         }
     ],
-    newPostText: ""
+    newPostText: "",
+    profile: null
 }
 
 
@@ -44,10 +57,16 @@ export type onPostChangeActionType = {
     newText: string
 }
 
+export type setUserProfileActionType = {
+    type: typeof SET_USER_PROFILE,
+    profile:  profileType
+}
+
 export type ProfilePageActionsTypes = addPostActionType | onPostChangeActionType;
 
 export const addPost = (): addPostActionType => ({type: ADD_POST});
 export const onPostChange = (newText: string): onPostChangeActionType => ({type: UPDATE_NEW_POST_TEXT, newText});
+export const setUserProfile = (profile: profileType): setUserProfileActionType => ({type: SET_USER_PROFILE, profile});
 
 const profileReducer = (state = initialState, action: ProfilePageActionsTypes): ProfilePageType => {
     switch (action.type) {
