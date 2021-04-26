@@ -62,7 +62,7 @@ export type setUserProfileActionType = {
     profile:  profileType
 }
 
-export type ProfilePageActionsTypes = addPostActionType | onPostChangeActionType;
+export type ProfilePageActionsTypes = addPostActionType | onPostChangeActionType | setUserProfileActionType;
 
 export const addPost = (): addPostActionType => ({type: ADD_POST});
 export const onPostChange = (newText: string): onPostChangeActionType => ({type: UPDATE_NEW_POST_TEXT, newText});
@@ -88,6 +88,11 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
             return {
                 ...state,
                 newPostText: action.newText
+            }
+        case SET_USER_PROFILE:
+            return {
+                ...state,
+                profile: action.profile
             }
         default:
             return state
