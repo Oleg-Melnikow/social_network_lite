@@ -1,4 +1,22 @@
 .header {
+    width: 100%;
     grid-area: h;
-    background: #ee9700;
+    background: #032b02;
+}
+
+.login{
+    float: right;
+    padding: 15px 35px;
+}
+
+.login a, .login span{
+    color: gold;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.login a:hover{
+    opacity: 1;
 }
