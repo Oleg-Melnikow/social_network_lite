@@ -60,7 +60,8 @@ export class UsersContainer extends React.Component<UsersPropsType> {
                 <Users users={this.props.users} pageSize={this.props.pageSize}
                        totalUsersCount={this.props.totalUsersCount}
                        currentPage={this.props.currentPage}
-                       onPageChanged={this.onPageChanged}/>
+                       onPageChanged={this.onPageChanged}
+                       toggleFollow={this.props.toggleFollow}/>
             </>
         )
     }

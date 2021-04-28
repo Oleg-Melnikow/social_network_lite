@@ -3,13 +3,15 @@ import style from "./Users.module.css"
 import avatar from "../../assets/image/avatar-guest.gif"
 import {UserType} from '../../redux/usersReducer';
 import {NavLink} from 'react-router-dom';
+import {userAPI} from "../../api/api";
 
 type UsersPropType = {
     users: Array<UserType>,
     pageSize: number,
     currentPage: number,
     totalUsersCount: number,
-    onPageChanged: (pageNumber: number) => void
+    onPageChanged: (pageNumber: number) => void,
+    toggleFollow: (userId: number) => void
 }
 
 export const Users = (props: UsersPropType) => {
@@ -35,7 +37,20 @@ export const Users = (props: UsersPropType) => {
                         <NavLink to={`profile/${u.id}`}>
                             <img src={u.photos.small ? u.photos.small : avatar} alt="avatar"/>
                         </NavLink>
-                        <button>
+                        <button
+                            onClick={() => {
+                                u.followed ?
+                                    userAPI.unFollowed(u.id).then(response => {
+                                        if (response.data.resultCode === 0) {
+                                            props.toggleFollow(u.id)
+                                        }
+                                    }):
+                                    userAPI.followed(u.id).then(response => {
+                                        if (response.data.resultCode === 0) {
+                                            props.toggleFollow(u.id)
+                                        }
+                                    })
+                            }}>
                             {u.followed ? "unfollow" : "follow"}
                         </button>
                     </div>
