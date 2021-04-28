@@ -7,6 +7,7 @@ import {
     setUsers,
     toggleFollow,
     toggleIsFetching,
+    toggleFollowingProgress,
     UserType
 } from "../../redux/usersReducer";
 import {Users} from "./Users";
@@ -18,7 +19,8 @@ type mapStateToPropsType = {
     pageSize: number,
     totalUsersCount: number,
     currentPage: number,
-    isFetching: boolean
+    isFetching: boolean,
+    followingInProgress: number[]
 }
 
 type mapDispatchToPropsType = {
@@ -26,7 +28,8 @@ type mapDispatchToPropsType = {
     setUsers: (users: Array<UserType>) => void,
     setCurrentPage: (currentPage: number) => void,
     setTotalCount: (totalCount: number) => void,
-    toggleIsFetching: (isFetching: boolean) => void
+    toggleIsFetching: (isFetching: boolean) => void,
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => void
 }
 
 export type UsersPropsType = mapStateToPropsType & mapDispatchToPropsType;
@@ -61,7 +64,9 @@ export class UsersContainer extends React.Component<UsersPropsType> {
                        totalUsersCount={this.props.totalUsersCount}
                        currentPage={this.props.currentPage}
                        onPageChanged={this.onPageChanged}
-                       toggleFollow={this.props.toggleFollow}/>
+                       toggleFollow={this.props.toggleFollow}
+                       followingInProgress={this.props.followingInProgress}
+                       toggleFollowingProgress={this.props.toggleFollowingProgress}/>
             </>
         )
     }
@@ -72,7 +77,8 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     pageSize: state.usersPage.pageSize,
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching
+    isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress
 })
 
 
@@ -81,6 +87,7 @@ export default connect(mapStateToProps, {
     setUsers,
     setCurrentPage,
     setTotalCount,
-    toggleIsFetching
+    toggleIsFetching,
+    toggleFollowingProgress
 })(UsersContainer);
 

@@ -3,6 +3,7 @@ const SET_USERS = "SET_USERS";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_COUNT = "SET_TOTAL_COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
 
 export type UserType = {
     id: number,
@@ -15,20 +16,22 @@ export type UserType = {
     }
 }
 
-export type ProfilePageType = {
+export type UsersPageType = {
     users: UserType[],
     pageSize: number,
     totalUsersCount: number,
     currentPage: number,
-    isFetching: boolean
+    isFetching: boolean,
+    followingInProgress: number[]
 }
 
-let initialState: ProfilePageType = {
+let initialState: UsersPageType = {
     users: [],
     pageSize: 5,
     totalUsersCount: 20,
     currentPage: 1,
-    isFetching: false
+    isFetching: false,
+    followingInProgress: []
 }
 
 
@@ -57,19 +60,31 @@ export type ToggleIsFetchingType = {
     isFetching: boolean
 }
 
+export type followingInProgressType = {
+    type: typeof TOGGLE_IS_FOLLOWING_PROGRESS,
+    isFetching: boolean
+    userId: number
+}
+
 export type ProfilePageActionsTypes = toggleFollowActionType
     | setUsersActionType
     | SetCurrentPageType
     | SetTotalCountType
-    | ToggleIsFetchingType;
+    | ToggleIsFetchingType
+    | followingInProgressType;
 
 export const toggleFollow = (userId: number): toggleFollowActionType => ({type: TOGGLE_FOLLOW, userId});
 export const setUsers = (users: Array<UserType>): setUsersActionType => ({type: SET_USERS, users});
 export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({type: SET_CURRENT_PAGE, currentPage});
 export const setTotalCount = (totalCount: number): SetTotalCountType => ({type: SET_TOTAL_COUNT, totalCount});
 export const toggleIsFetching = (isFetching: boolean): ToggleIsFetchingType => ({type: TOGGLE_IS_FETCHING, isFetching});
+export const toggleFollowingProgress = (isFetching: boolean, userId: number): followingInProgressType => ({
+    type: TOGGLE_IS_FOLLOWING_PROGRESS,
+    isFetching,
+    userId
+});
 
-const usersReducer = (state = initialState, action: ProfilePageActionsTypes): ProfilePageType => {
+const usersReducer = (state = initialState, action: ProfilePageActionsTypes): UsersPageType => {
     switch (action.type) {
         case TOGGLE_FOLLOW:
             return {
@@ -100,6 +115,14 @@ const usersReducer = (state = initialState, action: ProfilePageActionsTypes): Pr
             return {
                 ...state,
                 isFetching: action.isFetching
+            }
+        case TOGGLE_IS_FOLLOWING_PROGRESS:
+            return {
+                ...state,
+                followingInProgress: action.isFetching ?
+                    [...state.followingInProgress, action.userId] :
+                    [...state.followingInProgress.filter(id => id !== action.userId)]
+
             }
         default:
             return state

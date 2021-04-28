@@ -10,8 +10,10 @@ type UsersPropType = {
     pageSize: number,
     currentPage: number,
     totalUsersCount: number,
+    followingInProgress: number[],
     onPageChanged: (pageNumber: number) => void,
-    toggleFollow: (userId: number) => void
+    toggleFollow: (userId: number) => void,
+    toggleFollowingProgress: (isFetching: boolean, userId: number) => void
 }
 
 export const Users = (props: UsersPropType) => {
@@ -37,18 +39,21 @@ export const Users = (props: UsersPropType) => {
                         <NavLink to={`profile/${u.id}`}>
                             <img src={u.photos.small ? u.photos.small : avatar} alt="avatar"/>
                         </NavLink>
-                        <button
+                        <button disabled={props.followingInProgress.some(id => id === u.id)}
                             onClick={() => {
+                                props.toggleFollowingProgress(true, u.id)
                                 u.followed ?
                                     userAPI.unFollowed(u.id).then(response => {
                                         if (response.data.resultCode === 0) {
                                             props.toggleFollow(u.id)
                                         }
+                                        props.toggleFollowingProgress(false, u.id)
                                     }):
                                     userAPI.followed(u.id).then(response => {
                                         if (response.data.resultCode === 0) {
                                             props.toggleFollow(u.id)
                                         }
+                                        props.toggleFollowingProgress(false, u.id)
                                     })
                             }}>
                             {u.followed ? "unfollow" : "follow"}
