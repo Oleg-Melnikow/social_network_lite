@@ -13,10 +13,6 @@ export const userAPI = {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => response.data)
     },
-    onPageChanged(pageNumber: number, pageSize = 5) {
-        return instance.get(`users?page=${pageNumber}&count=${pageSize}`)
-            .then(response => response.data)
-    },
     followed(userId: number){
         return instance.post(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {})
     },
