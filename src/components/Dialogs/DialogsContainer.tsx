@@ -2,6 +2,7 @@ import {addMessage, DialogsPageType, onMessageChange} from "../../redux/dialogsR
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/store";
 import {Dialogs} from "./Dialogs";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 
 type mapStateToPropsType = {
@@ -19,4 +20,4 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     dialogsPage: state.dialogsPage
 })
 
-export default connect(mapStateToProps, {addMessage, onMessageChange})(Dialogs);
+export default withAuthRedirect(connect(mapStateToProps, {addMessage, onMessageChange})(Dialogs));
