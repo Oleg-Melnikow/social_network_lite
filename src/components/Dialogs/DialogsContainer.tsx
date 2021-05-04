@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {AppStateType} from "../../redux/store";
 import {Dialogs} from "./Dialogs";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
+import React from "react";
 
 
 type mapStateToPropsType = {
@@ -20,4 +22,7 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => ({
     dialogsPage: state.dialogsPage
 })
 
-export default withAuthRedirect(connect(mapStateToProps, {addMessage, onMessageChange})(Dialogs));
+export default compose<React.ComponentType>(
+    withAuthRedirect,
+    connect(mapStateToProps, {addMessage, onMessageChange})
+)(Dialogs);

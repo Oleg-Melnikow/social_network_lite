@@ -11,7 +11,6 @@ import {
     UserType, getUsers, unFollow, follow
 } from "../../redux/usersReducer";
 import {Users} from "./Users";
-import {userAPI} from "../../api/api";
 import {Preloader} from "../common/Preloader/Preloader";
 
 type mapStateToPropsType = {
