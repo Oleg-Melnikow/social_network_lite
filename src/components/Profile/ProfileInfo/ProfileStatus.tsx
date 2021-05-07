@@ -1,10 +1,14 @@
 import React, {ChangeEvent} from "react";
 
-export class ProfileStatus extends React.Component {
+type ProfileStatusType = {
+    status: string
+}
+
+export class ProfileStatus extends React.Component<ProfileStatusType> {
 
     state = {
         editMode: false,
-        status: "Hello"
+        status: this.props.status
     }
 
     activeEditMode = () =>{
@@ -25,7 +29,7 @@ export class ProfileStatus extends React.Component {
                 <input type="text" value={this.state.status}
                        onChange={this.onChangeStatus}
                        autoFocus onBlur={this.deActiveEditMode}/>:
-                <span onDoubleClick={this.activeEditMode}>{this.state.status}</span>
+                <span onDoubleClick={this.activeEditMode}>{this.props.status}</span>
             }
         </div>
     }

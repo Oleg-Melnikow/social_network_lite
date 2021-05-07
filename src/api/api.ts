@@ -24,7 +24,10 @@ export const userAPI = {
 export const profileAPI = {
     setUserProfile(userId: string){
         return instance.get(`profile/${userId}`)
-    }
+    },
+    getStatus(userId: number){
+        return instance.get(`/profile/status/${userId}`)
+    },
 }
 
 export const AuthAPI = {
