@@ -1,7 +1,8 @@
 import React, {ChangeEvent} from "react";
 
 type ProfileStatusType = {
-    status: string
+    status: string,
+    updateStatusProfile: (status: string) => void
 }
 
 export class ProfileStatus extends React.Component<ProfileStatusType> {
@@ -16,11 +17,18 @@ export class ProfileStatus extends React.Component<ProfileStatusType> {
     }
 
     deActiveEditMode = () => {
-        this.setState({editMode: false})
+        this.setState({editMode: false});
+        this.props.updateStatusProfile(this.state.status);
     }
 
     onChangeStatus = (e:ChangeEvent<HTMLInputElement>) => {
         this.setState({status: e.currentTarget.value})
+    }
+
+    componentDidUpdate(prevProps: Readonly<ProfileStatusType>, prevState: Readonly<{}>, snapshot?: any) {
+        if(prevProps.status !== this.props.status){
+            this.setState({status: this.props.status})
+        }
     }
 
     render() {
