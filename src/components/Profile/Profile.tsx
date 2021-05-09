@@ -1,11 +1,11 @@
 import React from "react";
 import style from "./Profile.module.css";
 import MyPostsContainer from "./MyPosts/MyPostContainer";
-import {profileType} from "../../redux/profileReducer";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
+import {ProfileType} from "../../api/api";
 
 export type ProfilePropsType = {
-    profile: profileType | null,
+    profile: ProfileType | null,
     status: string,
     updateStatusProfile: (status: string) => void
 }

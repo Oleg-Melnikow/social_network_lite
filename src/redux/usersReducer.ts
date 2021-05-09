@@ -1,5 +1,5 @@
 import {ThunkAction} from "redux-thunk";
-import {userAPI} from "../api/api";
+import {userAPI, UserType} from "../api/api";
 import {AppStateType} from "./store";
 
 const TOGGLE_FOLLOW = "TOGGLE_FOLLOW";
@@ -8,17 +8,6 @@ const SET_CURRENT_PAGE = "SET_CURRENT_PAGE";
 const SET_TOTAL_COUNT = "SET_TOTAL_COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS";
-
-export type UserType = {
-    id: number,
-    name: string,
-    status: string,
-    followed: boolean,
-    photos: {
-        small?: string,
-        large?: string
-    }
-}
 
 export type UsersPageType = {
     users: UserType[],

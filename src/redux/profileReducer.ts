@@ -1,5 +1,5 @@
 import {ThunkAction} from "redux-thunk";
-import {profileAPI} from "../api/api";
+import {profileAPI, ProfileType} from "../api/api";
 import {AppStateType} from "./store";
 
 const ADD_POST = "ADD_POST";
@@ -18,18 +18,8 @@ export type PostType = {
 export type ProfilePageType = {
     posts: Array<PostType>,
     newPostText: string,
-    profile: profileType | null,
+    profile: ProfileType | null,
     status: string
-}
-
-export type profileType = {
-    aboutMe: string,
-    fullName: string,
-    userId: number,
-    photos: {
-        small: string,
-        large: string
-    }
 }
 
 let initialState: ProfilePageType = {
@@ -66,7 +56,7 @@ export type onPostChangeActionType = {
 
 export type setUserProfileActionType = {
     type: typeof SET_USER_PROFILE,
-    profile: profileType
+    profile: ProfileType
 }
 
 export type setStatusProfileActionType = {
@@ -81,7 +71,7 @@ export type ProfilePageActionsTypes = addPostActionType
 
 export const addPost = (): addPostActionType => ({type: ADD_POST});
 export const onPostChange = (newText: string): onPostChangeActionType => ({type: UPDATE_NEW_POST_TEXT, newText});
-export const setUserProfile = (profile: profileType): setUserProfileActionType => ({type: SET_USER_PROFILE, profile});
+export const setUserProfile = (profile: ProfileType): setUserProfileActionType => ({type: SET_USER_PROFILE, profile});
 export const setStatusProfile = (status: string): setStatusProfileActionType => ({type: SET_STATUS_PROFILE, status});
 
 const profileReducer = (state = initialState, action: ProfilePageActionsTypes): ProfilePageType => {

@@ -4,6 +4,7 @@ import style from "./ProfileInfo.module.css"
 import {ProfileStatus} from "./ProfileStatus";
 
 export function ProfileInfo(props: ProfilePropsType) {
+
     return (
         <div>
             <div>
@@ -11,7 +12,7 @@ export function ProfileInfo(props: ProfilePropsType) {
             </div>
             <ProfileStatus status={props.status} updateStatusProfile={props.updateStatusProfile}/>
             <div className={style.avatar}>
-                <img src={props.profile?.photos.small} alt=""/>
+                <img src={`${props.profile?.photos.small}`} alt=""/>
             </div>
             <div className={style.info}>
                 <span>{props.profile?.aboutMe}</span>

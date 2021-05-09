@@ -5,14 +5,14 @@ import { AppStateType } from "./store";
 const SET_USER_DATA = "SET_USER_DATA";
 
 export type AuthType = {
-    userId: number | null,
+    id: number | null,
     email: string | null,
     login: string | null,
     isAuth: boolean
 }
 
 let initialState: AuthType = {
-    userId: null,
+    id: null,
     email: null,
     login: null,
     isAuth: false
@@ -32,8 +32,7 @@ export const authReducer = (state: AuthType = initialState, action: AuthActionsT
         case SET_USER_DATA:
             return {
                 ...state,
-                ...action.data,
-                isAuth: true
+                ...action.data
             }
         default:
             return state;
@@ -46,7 +45,8 @@ export const getAuthUserData = (): ThunkType => (dispatch, getState: () => AppSt
     AuthAPI.me()
         .then((response) => {
             if (response.resultCode === 0) {
-                dispatch(setAuthUserData(response.data));
+                let {id, login, email} = response.data
+                dispatch(setAuthUserData({id, login, email, isAuth: true}));
             }
         })
 }

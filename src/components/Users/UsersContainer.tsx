@@ -8,10 +8,11 @@ import {
     toggleFollow,
     toggleIsFetching,
     toggleFollowingProgress,
-    UserType, getUsers, unFollow, follow
+    getUsers, unFollow, follow
 } from "../../redux/usersReducer";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
+import {UserType} from "../../api/api";
 
 type mapStateToPropsType = {
     users: UserType[],

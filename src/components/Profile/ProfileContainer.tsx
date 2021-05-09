@@ -2,13 +2,14 @@ import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/store";
-import {getStatusProfile, getUserProfile, profileType, updateStatusProfile} from "../../redux/profileReducer";
+import {getStatusProfile, getUserProfile, updateStatusProfile} from "../../redux/profileReducer";
 import {RouteComponentProps, withRouter } from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import {ProfileType} from "../../api/api";
 
 type mapStateToPropsType = {
-    profile: profileType | null,
+    profile: ProfileType | null,
     status: string
 }
 
