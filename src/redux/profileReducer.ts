@@ -3,7 +3,6 @@ import {profileAPI, ProfileType} from "../api/api";
 import {AppStateType} from "./store";
 
 const ADD_POST = "ADD_POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE_NEW_POST_TEXT";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_STATUS_PROFILE = "SET_STATUS_PROFILE";
 
@@ -17,7 +16,6 @@ export type PostType = {
 
 export type ProfilePageType = {
     posts: Array<PostType>,
-    newPostText: string,
     profile: ProfileType | null,
     status: string
 }
@@ -39,18 +37,13 @@ let initialState: ProfilePageType = {
             time: "21:22"
         }
     ],
-    newPostText: "",
     profile: null,
     status: ""
 }
 
 
 export type addPostActionType = {
-    type: typeof ADD_POST
-}
-
-export type onPostChangeActionType = {
-    type: typeof UPDATE_NEW_POST_TEXT,
+    type: typeof ADD_POST,
     newText: string
 }
 
@@ -65,12 +58,10 @@ export type setStatusProfileActionType = {
 }
 
 export type ProfilePageActionsTypes = addPostActionType
-    | onPostChangeActionType
     | setUserProfileActionType
     | setStatusProfileActionType;
 
-export const addPost = (): addPostActionType => ({type: ADD_POST});
-export const onPostChange = (newText: string): onPostChangeActionType => ({type: UPDATE_NEW_POST_TEXT, newText});
+export const addPost = (newText: string): addPostActionType => ({type: ADD_POST, newText});
 export const setUserProfile = (profile: ProfileType): setUserProfileActionType => ({type: SET_USER_PROFILE, profile});
 export const setStatusProfile = (status: string): setStatusProfileActionType => ({type: SET_STATUS_PROFILE, status});
 
@@ -81,19 +72,13 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
             const postTime = `${time.getHours()}:${time.getMinutes()}`
             return {
                 ...state,
-                newPostText: "",
                 posts: [{
                     id: state.posts.length + 1,
                     avatar: "https://s.starladder.com/uploads/user_logo/5/c/0/f/meta_tag_66fb805dd1ae6ed6151784bfe300298c.jpg",
-                    message: state.newPostText,
+                    message: action.newText,
                     name: "Jack",
                     time: postTime
                 }, ...state.posts]
-            }
-        case UPDATE_NEW_POST_TEXT:
-            return {
-                ...state,
-                newPostText: action.newText
             }
         case SET_USER_PROFILE:
             return {
