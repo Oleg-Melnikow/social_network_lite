@@ -1,14 +1,17 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import style from "./Dialogs.module.css";
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 import {DialogsPropsType} from "./DialogsContainer";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {TextArea} from "../common/FormsControl/FormsControl";
+import {maxLength, required} from "../../utils/validators/validators";
 
 export const Dialogs = (props: DialogsPropsType) => {
-
     const {dialogsPage} = props
-    const onChangeMessageHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onMessageChange(event.currentTarget.value)
+
+    const addMessage = (formData: FormType) => {
+        props.addMessage(formData.message)
     }
 
     return (
@@ -22,16 +25,29 @@ export const Dialogs = (props: DialogsPropsType) => {
                     {dialogsPage.messages.map(m => <Message key={m.id} id={m.id} message={m.message}/>)}
                 </div>
             </div>
-            <div className={style.dialogsItem}>
-                <div>
-                <textarea value={props.dialogsPage.newMessageBody}
-                          onChange={onChangeMessageHandler}
-                          name="post" id="newPost"/>
-                </div>
-                <div>
-                    <button onClick={props.addMessage}>Add post</button>
-                </div>
+            <div>
+                <MessageForm onSubmit={addMessage}/>
             </div>
         </div>
     )
 }
+
+type FormType = {
+    message: string
+}
+
+const maxLengthPost = maxLength(100);
+
+const AddMessageForm: React.FC<InjectedFormProps<FormType>> = (props) => {
+    return <form onSubmit={props.handleSubmit}>
+        <div>
+            <Field component={TextArea} name="message" type="text"
+                   validate={[required, maxLengthPost]} placeholder="Enter your message"/>
+        </div>
+        <div>
+            <input type="submit" value="Send message"/>
+        </div>
+    </form>
+}
+
+const MessageForm = reduxForm<FormType>({form: "dialog"})(AddMessageForm);

@@ -10,26 +10,19 @@ export type DialogType = {
 
 export type DialogsPageType = {
     dialogs: Array<DialogType>,
-    messages: Array<MessageType>,
-    newMessageBody: string
+    messages: Array<MessageType>
 }
 
 const ADD_MESSAGE = "ADD_MESSAGE";
-const UPDATE_MESSAGE_TEXT = "UPDATE_MESSAGE_TEXT";
 
 export type addMessageActionType = {
-    type: typeof ADD_MESSAGE
-}
-
-export type onMessageChangeActionType = {
-    type: typeof UPDATE_MESSAGE_TEXT,
+    type: typeof ADD_MESSAGE,
     newMessage: string
 }
 
-export type DialogsPageActionsTypes = addMessageActionType | onMessageChangeActionType
+export type DialogsPageActionsTypes = addMessageActionType
 
-export const addMessage = (): addMessageActionType => ({type: ADD_MESSAGE})
-export const onMessageChange = (newMessage: string): onMessageChangeActionType => ({type: UPDATE_MESSAGE_TEXT, newMessage})
+export const addMessage = (newMessage: string): addMessageActionType => ({type: ADD_MESSAGE, newMessage})
 
 let initialState: DialogsPageType = {
     dialogs: [
@@ -42,7 +35,6 @@ let initialState: DialogsPageType = {
         {id: 2, message: "Hello"},
         {id: 3, message: "Welcome"}
     ],
-    newMessageBody: ""
 }
 
 const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsPageActionsTypes): DialogsPageType => {
@@ -50,16 +42,10 @@ const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsPa
         case ADD_MESSAGE:
             return {
                 ...state,
-                newMessageBody: "",
                 messages: [...state.messages, {
                     id: state.messages.length + 1,
-                    message: state.newMessageBody
+                    message: action.newMessage
                 }]
-            }
-        case UPDATE_MESSAGE_TEXT:
-            return {
-                ...state,
-                newMessageBody: action.newMessage
             }
         default:
             return state;
