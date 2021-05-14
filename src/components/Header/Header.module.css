@@ -20,3 +20,7 @@
 .login a:hover{
     opacity: 1;
 }
+
+.userLogin span{
+    padding-left: 10px;
+}
