@@ -1,4 +1,4 @@
-import profileReducer, {addPost, onPostChange, ProfilePageType} from "./profileReducer";
+import profileReducer, {addPost, deletePost, ProfilePageType} from "./profileReducer";
 
 let startState: ProfilePageType;
 
@@ -20,23 +20,32 @@ beforeEach(() => {
                 time: "21:22"
             }
         ],
-        newPostText: ""
+        profile: null,
+        status: ""
     }
-})
-
-test('title of textarea should be changed', () => {
-
-    const action = onPostChange("Hello friend");
-    const endState = profileReducer(startState, action)
-
-    expect(endState.newPostText).toBe("Hello friend");
 });
 
 test('correct post should be added from array', () => {
 
-    const action = addPost();
+    const action = addPost("Hello friend");
     const endState = profileReducer(startState, action)
 
     expect(endState.posts.length).toBe(3);
-    expect(endState.posts[0].message).toBe(startState.newPostText);
+    expect(endState.posts[0].message).toBe("Hello friend");
+});
+
+test('after deleted length of message should be decrement', () => {
+
+    const action = deletePost(1);
+    const endState = profileReducer(startState, action)
+
+    expect(endState.posts.length).toBe(1);
+});
+
+test(`'after deleted length of message shouldn't be decrement if id is incorrect`, () => {
+
+    const action = deletePost(1000);
+    const endState = profileReducer(startState, action)
+
+    expect(endState.posts.length).toBe(2);
 });

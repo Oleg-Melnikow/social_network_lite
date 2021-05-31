@@ -5,6 +5,7 @@ import {AppStateType} from "./store";
 const ADD_POST = "ADD_POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_STATUS_PROFILE = "SET_STATUS_PROFILE";
+const DELETE_POST = "DELETE_POST";
 
 export type PostType = {
     id: number,
@@ -57,13 +58,20 @@ export type setStatusProfileActionType = {
     status: string
 }
 
+export type deletePostActionType = {
+    type: typeof DELETE_POST,
+    postId: number
+}
+
 export type ProfilePageActionsTypes = addPostActionType
     | setUserProfileActionType
-    | setStatusProfileActionType;
+    | setStatusProfileActionType
+    | deletePostActionType;
 
 export const addPost = (newText: string): addPostActionType => ({type: ADD_POST, newText});
 export const setUserProfile = (profile: ProfileType): setUserProfileActionType => ({type: SET_USER_PROFILE, profile});
 export const setStatusProfile = (status: string): setStatusProfileActionType => ({type: SET_STATUS_PROFILE, status});
+export const deletePost = (postId: number): deletePostActionType => ({type: DELETE_POST, postId});
 
 const profileReducer = (state = initialState, action: ProfilePageActionsTypes): ProfilePageType => {
     switch (action.type) {
@@ -90,6 +98,11 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
                 ...state,
                 status: action.status
             }
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(p => p.id !== action.postId)
+            }
         default:
             return state
     }
@@ -97,7 +110,7 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
 
 type ThunkType = ThunkAction<void, AppStateType, unknown, ProfilePageActionsTypes>
 
-export const getUserProfile = (userId: string): ThunkType => (dispatch, getState: () => AppStateType) => {
+export const getUserProfile = (userId: string): ThunkType => (dispatch) => {
     profileAPI.setUserProfile(userId)
         .then(response => {
             dispatch(setUserProfile(response.data))
@@ -105,14 +118,14 @@ export const getUserProfile = (userId: string): ThunkType => (dispatch, getState
         })
 }
 
-export const getStatusProfile = (userId: number): ThunkType => (dispatch, getState: () => AppStateType) => {
+export const getStatusProfile = (userId: number): ThunkType => (dispatch) => {
     profileAPI.getStatus(userId)
         .then(response => {
             dispatch(setStatusProfile(response.data))
         })
 }
 
-export const updateStatusProfile = (status: string): ThunkType => (dispatch,getState: () => AppStateType) => {
+export const updateStatusProfile = (status: string): ThunkType => (dispatch) => {
     profileAPI.updateStatus(status)
         .then(response => {
             if(response.data.resultCode === 0) {
