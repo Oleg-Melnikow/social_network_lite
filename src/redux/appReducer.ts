@@ -17,7 +17,6 @@ export const setInitialized = () => ({type: "SET_INITIALIZED"} as const)
 export const appReducer = (state: AppType = initialState, action: AppActionsTypes): AppType => {
     switch (action.type) {
         case "SET_INITIALIZED":
-            debugger
             return {
                 ...state,
                 initialized: true

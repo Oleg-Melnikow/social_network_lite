@@ -2,7 +2,7 @@ import React from "react";
 import s from "./Login.module.css"
 import avatar from "../../assets/image/avatar-guest.gif"
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormsControl/FormsControl";
+import {CreateField, Input} from "../common/FormsControl/FormsControl";
 import {required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../redux/authReducer";
@@ -16,18 +16,18 @@ type FormType = {
 }
 
 const LoginForm: React.FC<InjectedFormProps<FormType>> = (props) => {
-    return <form onSubmit={props.handleSubmit}>
-        <p>Email Address</p>
-        <Field component={Input} type="text" placeholder="Enter email" name="email"
-               validate={[required]}/>
-        <p>Password</p>
-        <Field component={Input} type="password" placeholder="Enter Password" name="password"
-               validate={[required]}/>
+
+    let {handleSubmit, error} = props;
+
+    return <form onSubmit={handleSubmit}>
+        {CreateField(Input, "Enter email", "email", [required], "Email Address", "text")}
+        {CreateField(Input, "Enter Password", "password", [required], "Password", "password")}
         <div className={s.remember}>
             <Field component="input" type="checkbox" name="rememberMe"/>
-            <p>Remember me</p></div>
-        {props.error && <div style={{border: "1px solid red", color: "darkred", padding: "10px"}}>
-            {props.error}
+            <p>Remember me</p>
+        </div>
+        {error && <div style={{border: "1px solid red", color: "darkred", padding: "10px"}}>
+            {error}
         </div>}
         <input type="submit" value="Sing In"/>
     </form>

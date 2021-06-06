@@ -2,10 +2,10 @@ import {ThunkAction} from "redux-thunk";
 import {profileAPI, ProfileType} from "../api/api";
 import {AppStateType} from "./store";
 
-const ADD_POST = "ADD_POST";
-const SET_USER_PROFILE = "SET_USER_PROFILE";
-const SET_STATUS_PROFILE = "SET_STATUS_PROFILE";
-const DELETE_POST = "DELETE_POST";
+const ADD_POST = "social_network/profile/ADD_POST";
+const SET_USER_PROFILE = "social_network/profile/SET_USER_PROFILE";
+const SET_STATUS_PROFILE = "social_network/profile/SET_STATUS_PROFILE";
+const DELETE_POST = "social_network/profile/DELETE_POST";
 
 export type PostType = {
     id: number,
@@ -110,29 +110,22 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
 
 type ThunkType = ThunkAction<void, AppStateType, unknown, ProfilePageActionsTypes>
 
-export const getUserProfile = (userId: string): ThunkType => (dispatch) => {
-    profileAPI.setUserProfile(userId)
-        .then(response => {
-            dispatch(setUserProfile(response.data))
-            console.log(response.data)
-        })
+export const getUserProfile = (userId: string): ThunkType => async (dispatch) => {
+    let response = await profileAPI.setUserProfile(userId)
+    dispatch(setUserProfile(response.data))
 }
 
-export const getStatusProfile = (userId: number): ThunkType => (dispatch) => {
-    profileAPI.getStatus(userId)
-        .then(response => {
-            dispatch(setStatusProfile(response.data))
-        })
+export const getStatusProfile = (userId: number): ThunkType => async (dispatch) => {
+    let response = await profileAPI.getStatus(userId)
+    dispatch(setStatusProfile(response.data))
 }
 
-export const updateStatusProfile = (status: string): ThunkType => (dispatch) => {
-    profileAPI.updateStatus(status)
-        .then(response => {
-            if(response.data.resultCode === 0) {
-                dispatch(setStatusProfile(status))
-                console.log(response.data)
-            }
-        })
+export const updateStatusProfile = (status: string): ThunkType => async (dispatch) => {
+    let response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setStatusProfile(status))
+        console.log(response.data)
+    }
 }
 
 export default profileReducer;
