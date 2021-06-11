@@ -141,7 +141,6 @@ export const updateStatusProfile = (status: string): ThunkType => async (dispatc
 }
 
 export const savePhoto = (photo: File): ThunkType => async (dispatch) => {
-    debugger
     let response = await profileAPI.savePhoto(photo);
     if (response.data.resultCode === 0) {
         dispatch(savePhotoSuccess(response.data.data.photos));

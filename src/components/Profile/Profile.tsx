@@ -7,13 +7,16 @@ import {ProfileType} from "../../api/api";
 export type ProfilePropsType = {
     profile: ProfileType | null,
     status: string,
+    isOwner: boolean
     updateStatusProfile: (status: string) => void
+    savePhoto: (photo: File) => void
 }
 
 export function Profile(props: ProfilePropsType) {
     return (
         <div className={style.content}>
-            <ProfileInfo profile={props.profile} status={props.status}
+            <ProfileInfo profile={props.profile} status={props.status} isOwner={props.isOwner}
+                         savePhoto={props.savePhoto}
                          updateStatusProfile={props.updateStatusProfile}/>
             <MyPostsContainer/>
         </div>
