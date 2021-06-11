@@ -16,9 +16,9 @@ export type UserType = {
     followed: boolean
 }
 
-type PhotosType = {
+export type PhotosType = {
     small: null | string,
-    large: null| string
+    large: null | string
 }
 
 
@@ -67,7 +67,7 @@ export const userAPI = {
 }
 
 export const profileAPI = {
-    setUserProfile(userId: string) {
+    setUserProfile(userId: number) {
         return instance.get<ProfileType>(`profile/${userId}`)
     },
     getStatus(userId: number) {
@@ -75,6 +75,15 @@ export const profileAPI = {
     },
     updateStatus(status: string) {
         return instance.put<ResponseType>(`profile/status`, {status})
+    },
+    savePhoto(photo: File) {
+        let formData = new FormData();
+        formData.append("image", photo);
+        return instance.put<ResponseType<{ photos: PhotosType }>>(`profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 }
 
@@ -87,7 +96,7 @@ export const AuthAPI = {
         }>>(`auth/me`).then(response => response.data)
     },
     login(email: string, password: string, rememberMe: boolean = false) {
-        return instance.post<ResponseType<{userId: number}>>(`auth/login`, {email, password, rememberMe});
+        return instance.post<ResponseType<{ userId: number }>>(`auth/login`, {email, password, rememberMe});
     },
     logout() {
         return instance.delete<ResponseType>(`auth/login`);

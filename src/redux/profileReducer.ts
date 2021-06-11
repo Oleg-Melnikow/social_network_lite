@@ -1,11 +1,12 @@
 import {ThunkAction} from "redux-thunk";
-import {profileAPI, ProfileType} from "../api/api";
+import {PhotosType, profileAPI, ProfileType} from "../api/api";
 import {AppStateType} from "./store";
 
 const ADD_POST = "social_network/profile/ADD_POST";
 const SET_USER_PROFILE = "social_network/profile/SET_USER_PROFILE";
 const SET_STATUS_PROFILE = "social_network/profile/SET_STATUS_PROFILE";
 const DELETE_POST = "social_network/profile/DELETE_POST";
+const SAVE_PHOTO = "social_network/profile/SAVE_PHOTO";
 
 export type PostType = {
     id: number,
@@ -38,7 +39,7 @@ let initialState: ProfilePageType = {
             time: "21:22"
         }
     ],
-    profile: null,
+    profile: null as ProfileType | null,
     status: ""
 }
 
@@ -63,15 +64,22 @@ export type deletePostActionType = {
     postId: number
 }
 
+export type savePhotoSuccessActionType = {
+    type: typeof SAVE_PHOTO,
+    photos: PhotosType
+}
+
 export type ProfilePageActionsTypes = addPostActionType
     | setUserProfileActionType
     | setStatusProfileActionType
-    | deletePostActionType;
+    | deletePostActionType
+    | savePhotoSuccessActionType;
 
 export const addPost = (newText: string): addPostActionType => ({type: ADD_POST, newText});
 export const setUserProfile = (profile: ProfileType): setUserProfileActionType => ({type: SET_USER_PROFILE, profile});
 export const setStatusProfile = (status: string): setStatusProfileActionType => ({type: SET_STATUS_PROFILE, status});
 export const deletePost = (postId: number): deletePostActionType => ({type: DELETE_POST, postId});
+export const savePhotoSuccess = (photos: PhotosType): savePhotoSuccessActionType => ({type: SAVE_PHOTO, photos});
 
 const profileReducer = (state = initialState, action: ProfilePageActionsTypes): ProfilePageType => {
     switch (action.type) {
@@ -103,6 +111,11 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
                 ...state,
                 posts: state.posts.filter(p => p.id !== action.postId)
             }
+        case SAVE_PHOTO:
+            return {
+                ...state,
+                profile: {...state.profile, photos: action.photos} as ProfileType
+            }
         default:
             return state
     }
@@ -110,7 +123,7 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
 
 type ThunkType = ThunkAction<void, AppStateType, unknown, ProfilePageActionsTypes>
 
-export const getUserProfile = (userId: string): ThunkType => async (dispatch) => {
+export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
     let response = await profileAPI.setUserProfile(userId)
     dispatch(setUserProfile(response.data))
 }
@@ -124,7 +137,14 @@ export const updateStatusProfile = (status: string): ThunkType => async (dispatc
     let response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setStatusProfile(status))
-        console.log(response.data)
+    }
+}
+
+export const savePhoto = (photo: File): ThunkType => async (dispatch) => {
+    debugger
+    let response = await profileAPI.savePhoto(photo);
+    if (response.data.resultCode === 0) {
+        dispatch(savePhotoSuccess(response.data.data.photos));
     }
 }
 
