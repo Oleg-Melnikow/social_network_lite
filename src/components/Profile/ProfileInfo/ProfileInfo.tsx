@@ -2,19 +2,25 @@ import React, {ChangeEvent, useState} from "react";
 import {ProfilePropsType} from "../Profile";
 import style from "./ProfileInfo.module.css"
 import {ProfileStatus} from "./ProfileStatus";
-import {ProfileType} from "../../../api/api";
+import {ContactsType, ProfileType} from "../../../api/api";
+import ProfileDataForm from "./ProfileDataForm";
 
 export function ProfileInfo(props: ProfilePropsType) {
 
     function handlerPhoto(e: ChangeEvent<HTMLInputElement>) {
         if (e.target.files) {
-            props.savePhoto(e.target.files[0])
+            props.savePhoto(e.target.files[0]);
         }
     }
 
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
     const goToEditMode = () => setIsEditMode(true);
+
+    const onSubmit = (formData: ProfileType) => {
+        props.saveProfile(formData);
+        setIsEditMode(false);
+    }
 
     return (
         <div>
@@ -27,7 +33,7 @@ export function ProfileInfo(props: ProfilePropsType) {
                 {props.isOwner && <input type="file" onChange={handlerPhoto}/>}
             </div>
             {isEditMode ?
-                <ProfileDataForm/> :
+                <ProfileDataForm profile={props.profile} onSubmit={onSubmit}/> :
                 <ProfileData profile={props.profile} isOwner={props.isOwner} goToEditMode={goToEditMode}/>}
         </div>
     )
@@ -41,38 +47,38 @@ type ProfileDataPropsType = {
 
 const ProfileData = (props: ProfileDataPropsType) => {
 
-    const contacts = props.profile?.contacts
+    const {isOwner, goToEditMode, profile} = props;
+    const contacts = profile?.contacts;
+
     return <div>
-        {props.isOwner && <div>
-            <button onClick={props.goToEditMode}>edit</button>
+        {isOwner && <div>
+            <button onClick={goToEditMode}>edit</button>
         </div>}
         <div className={style.info}>
-            <span>{props.profile?.aboutMe}</span>
-            <span>{props.profile?.fullName}</span>
+            <span>{profile?.aboutMe}</span>
+            <span>{profile?.fullName}</span>
         </div>
         <div>
-            <b>Looking for a Job:</b> {props.profile?.lookingForAJob ? "yes" : "no"}
+            <b>Looking for a Job:</b> {profile?.lookingForAJob ? "yes" : "no"}
         </div>
         <div>
-            <b>Looking for a Job description:</b> {props.profile?.lookingForAJobDescription}
+            <b>Looking for a Job description:</b> {profile?.lookingForAJobDescription}
         </div>
         <div>
             <b>Contacts</b>:
             {contacts && Object.keys(contacts).map(key => {
-                // @ts-ignore
-                return <Contacts contactTitle={key} contactValue={contacts[key]}/>
+                return <Contacts key={key} contactTitle={key} contactValue={contacts[key as keyof ContactsType]}/>
             })}
         </div>
     </div>
 }
 
-const ProfileDataForm = () => {
-    return <div>
-        Form
-    </div>
+type ContactsPropsType = {
+    contactTitle: string,
+    contactValue: string
 }
 
-const Contacts = (props: { contactTitle: string, contactValue: string }) => {
+export const Contacts = (props: ContactsPropsType) => {
     return (<div>
             {props.contactValue &&
             <div><b>{props.contactTitle}</b>: {props.contactValue}</div>
