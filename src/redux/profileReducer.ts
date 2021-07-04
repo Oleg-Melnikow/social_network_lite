@@ -1,6 +1,7 @@
 import {ThunkAction} from "redux-thunk";
 import {PhotosType, profileAPI, ProfileType} from "../api/api";
 import {AppStateType} from "./store";
+import {FormAction, stopSubmit} from "redux-form";
 
 const ADD_POST = "social_network/profile/ADD_POST";
 const SET_USER_PROFILE = "social_network/profile/SET_USER_PROFILE";
@@ -121,7 +122,7 @@ const profileReducer = (state = initialState, action: ProfilePageActionsTypes): 
     }
 }
 
-type ThunkType = ThunkAction<void, AppStateType, unknown, ProfilePageActionsTypes>
+type ThunkType = ThunkAction<void, AppStateType, unknown, ProfilePageActionsTypes | FormAction>
 
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
     let response = await profileAPI.setUserProfile(userId)
@@ -157,7 +158,7 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch,
             throw new Error("userId can't be null")
         }
     } else {
-        return Promise.reject(response.data.messages[0])
+        dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}))
     }
 }
 
