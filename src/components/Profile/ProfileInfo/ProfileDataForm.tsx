@@ -9,7 +9,7 @@ type PropsType = {
 
 
 const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & PropsType> = (props) => {
-    debugger
+
     const contacts = props.profile?.contacts;
     const {error} = props;
 
